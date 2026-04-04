@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 function doConnect() {
-    let url = "mongodb+srv://inderjeetis917_db_user:jR6eOe6FDJdtQzlQ@cluster0.gpnh6ei.mongodb.net/MernProjDB?retryWrites=true&w=majority&appName=Cluster0";
+    let url = process.env.MONGO_URI;
 
     mongoose.connect(url) // Stripped options to use Mongoose 6+ defaults
     .then(() => console.log("Mongo Connection Successful!"))
