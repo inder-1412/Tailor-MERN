@@ -5,6 +5,7 @@ var path = require("path");
 var userRouter = require("./routers/userRouter");
 var tailorRouter = require("./routers/tailorRouter");
 var { doConnect } = require("./config/db");
+const { model } = require("mongoose");
 
 var app = express();
 
@@ -29,3 +30,5 @@ app.use((req, res) => {
     console.log(req.method, req.url);
     res.status(404).send("Invalid URL..");
 });
+
+modele.exports = app;
