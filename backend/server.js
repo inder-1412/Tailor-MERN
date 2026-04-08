@@ -11,8 +11,8 @@ var app = express();
 app.use(express.json());
 app.use(cors());
 app.use(express.urlencoded(true));
-app.use(fileUploader());
-app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+// app.use(fileUploader());
+// app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 
 doConnect();
