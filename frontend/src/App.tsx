@@ -1,4 +1,3 @@
-import Tabs from "./components/Tabs";
 import Login from "./pages/Login";
 import ProfileForm from "./pages/Customer/ProfileForm";
 import Register from "./pages/Register";
