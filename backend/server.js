@@ -31,4 +31,4 @@ app.use((req, res) => {
     res.status(404).send("Invalid URL..");
 });
 
-modele.exports = app;
+module.exports = app;
