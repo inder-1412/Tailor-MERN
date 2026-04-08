@@ -1,4 +1,4 @@
-import { useState, type Key } from "react";
+import { useState } from "react";
 import ComboBox from "./components/ComboBox";
 import axios from "axios";
 
@@ -51,7 +51,7 @@ export default function FindTailor() {
         }
     };
 
-    const tailors = [1, 2, 3, 4, 5, 6];
+    // const tailors = [1, 2, 3, 4, 5, 6];
 
     return (
         // Changed bg-gray-100 to bg-slate-50 for a cleaner look

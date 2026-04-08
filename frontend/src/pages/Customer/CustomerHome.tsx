@@ -1,11 +1,10 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import {
     UserCircle,
     Search,
     Star,
     LogOut,
     ChevronRight,
-    Settings,
 } from "lucide-react";
 import ProfileForm from "./ProfileForm";
 import FindTailor from "./FindTailor";

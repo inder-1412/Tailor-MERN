@@ -1,5 +1,5 @@
 import { Dialog, DialogBackdrop, DialogPanel, DialogTitle } from '@headlessui/react'
-import { LogOut, AlertTriangle } from 'lucide-react' // Using Lucide to match your other icons
+import {  AlertTriangle } from 'lucide-react' // Using Lucide to match your other icons
 
 interface LogoutModalProps {
   isOpen: boolean;
