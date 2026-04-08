@@ -34,7 +34,7 @@ function RateAndReview() {
     const handleMobileBlur = async () => {
         if (!form.mobile) return;
         try {
-            const res = await axios.post("http://localhost:5002/user/getByMobile", {
+            const res = await axios.post("https://tailor-mern-bcknd.vercel.app/user/getByMobile", {
                 mobile: form.mobile,
             });
             if (res.data.status) {
@@ -56,7 +56,7 @@ function RateAndReview() {
 
         setLoading(true);
         try {
-            const res = await axios.post("http://localhost:5002/user/addReview", form);
+            const res = await axios.post("https://tailor-mern-bcknd.vercel.app/user/addReview", form);
             if (res.data.status) {
                 toast.success("Review submitted successfully 🎉");
                 setForm({ mobile: "", star: 0, review: "" });

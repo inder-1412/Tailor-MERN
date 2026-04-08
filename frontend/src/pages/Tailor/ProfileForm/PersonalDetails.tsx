@@ -49,7 +49,7 @@ function PersonalDetails() {
         }
 
         axios
-            .post("http://localhost:5002/tailor/fetchPersonalInfo", {
+            .post("https://tailor-mern-bcknd.vercel.app/tailor/fetchPersonalInfo", {
                 email: emailFromStorage,
             })
             .then((res) => {
@@ -72,7 +72,7 @@ function PersonalDetails() {
 
                     if (user.profilepic) {
                         setProfileImageUrl(
-                            `http://localhost:5002/uploads/${user.profilepic}`,
+                            `https://tailor-mern-bcknd.vercel.app/uploads/${user.profilepic}`,
                         );
                     }
                 }
@@ -141,7 +141,7 @@ function PersonalDetails() {
             }
 
             const resp = await axios.post(
-                "http://localhost:5002/tailor/personalInfo",
+                "https://tailor-mern-bcknd.vercel.app/tailor/personalInfo",
                 formData,
                 {
                     headers: {
@@ -179,7 +179,7 @@ function PersonalDetails() {
 
         try {
             const res = await axios.post(
-                "http://localhost:5002/tailor/extract-aadhar",
+                "https://tailor-mern-bcknd.vercel.app/tailor/extract-aadhar",
                 formData,
                 {
                     headers: {

@@ -55,7 +55,7 @@ function Login() {
 
         setErrors({});
 
-        let url = "http://localhost:5002/user/logIn";
+        let url = "https://tailor-mern-bcknd.vercel.app/user/logIn";
 
         const payload = {
             email: form.email,

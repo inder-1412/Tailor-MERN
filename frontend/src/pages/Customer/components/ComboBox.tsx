@@ -18,7 +18,7 @@ export default function ComboBox({
 
     useEffect(() => {
         const fetchCities = async () => {
-            const url = "http://localhost:5002/user/cities";
+            const url = "https://tailor-mern-bcknd.vercel.app/user/cities";
             try {
                 const resp = await axios.post(url, {}, {
                     headers: { "Content-Type": "application/json" },

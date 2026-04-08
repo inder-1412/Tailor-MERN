@@ -80,7 +80,7 @@ function ProfileForm() {
 
         setErrors({}); // clear all error's there..
 
-        const url = "http://localhost:5002/user/customerProfile";
+        const url = "https://tailor-mern-bcknd.vercel.app/user/customerProfile";
 
         const formData = new FormData();
         formData.append("email", form.email);
@@ -102,7 +102,7 @@ function ProfileForm() {
     };
 
     const fetchCustomer = async () => {
-        let url = "http://localhost:5002/user/fetchCustomerProf";
+        let url = "https://tailor-mern-bcknd.vercel.app/user/fetchCustomerProf";
 
         let obj = {
             email: form.email,
@@ -115,7 +115,7 @@ function ProfileForm() {
         const user = resp.data.doc;
 
         if (user.profilepic) {
-            setPrev(`http://localhost:5002/uploads/${user.profilepic}`);
+            setPrev(`https://tailor-mern-bcknd.vercel.app/uploads/${user.profilepic}`);
         }
 
         setForm((prev) => ({
@@ -136,7 +136,7 @@ function ProfileForm() {
     };
 
     const handleUpdate = async () => {
-        let url = "http://localhost:5002/user/customerProfUpdate";
+        let url = "https://tailor-mern-bcknd.vercel.app/user/customerProfUpdate";
 
         const formData = new FormData();
         formData.append("email", form.email);

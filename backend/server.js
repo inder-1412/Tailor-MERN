@@ -5,7 +5,6 @@ var path = require("path");
 var userRouter = require("./routers/userRouter");
 var tailorRouter = require("./routers/tailorRouter");
 var { doConnect } = require("./config/db");
-const { model } = require("mongoose");
 
 var app = express();
 

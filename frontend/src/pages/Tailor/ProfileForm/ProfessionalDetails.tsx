@@ -48,7 +48,7 @@ function ProfessionalDetails() {
         }
 
         axios
-            .post("http://localhost:5002/tailor/fetchProfessionalInfo", {
+            .post("https://tailor-mern-bcknd.vercel.app/tailor/fetchProfessionalInfo", {
                 email: email,
             })
             .then((res) => {
@@ -114,7 +114,7 @@ function ProfessionalDetails() {
         setErrors({});
 
 
-        let url = "http://localhost:5002/tailor/professionalInfo";
+        let url = "https://tailor-mern-bcknd.vercel.app/tailor/professionalInfo";
 
         let email = localStorage.getItem("emailId");
 

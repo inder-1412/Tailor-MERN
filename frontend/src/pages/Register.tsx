@@ -51,7 +51,7 @@ function Register() {
 
         setErrors({});
 
-        const url = "http://localhost:5002/user/signUp";
+        const url = "https://tailor-mern-bcknd.vercel.app/user/signUp";
 
         const payload = {
             email: formDt.email,
