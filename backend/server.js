@@ -26,7 +26,6 @@ app.use("/tailor", tailorRouter);
 
 //-------------IF REQUEST FOR INVALID URL HANDLER---------------------
 app.use((req, res) => {
-    console.log(req.method, req.url);
     res.status(404).send("Invalid URL..");
 });
 
