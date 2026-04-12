@@ -5,6 +5,7 @@ var custColRef = require("../models/modelCustomer");
 const nodemailer = require("nodemailer");
 var tailorColRef = require("../models/modelTailor");
 var reviewColRef = require("../models/modelReview");
+const cloudinary = require("../config/cloudinary");
 
 require("dotenv").config();
 
@@ -121,16 +122,24 @@ const doLogIn = (req, resp) => {
         });
 };
 
-const custProfile = (req, resp) => {
+const custProfile = async (req, resp) => {
     let fileName = req.files.profilepic.name;
-    let uploadFolderPath = path.join(__dirname, "..", "uploads", fileName);
-    req.files.profilepic.mv(uploadFolderPath);
-    req.body.filePath = uploadFolderPath;
+    // 
+    
+    const uploadResponse = await new Promise((resolve, reject) => {
+            cloudinary.uploader.upload_stream({ folder: "customer_profiles" }, (error, result) => {
+                if (error) reject(error);
+                else resolve(result);
+            }).end(fileName.data);
+        });
+
+        // Store the URL in the database
+        req.body.profilepic = uploadResponse.secure_url;
 
     // req.body.dos = new Date().toString();
 
     //-------IMPORTANT NAME SHOULD BE SAME AS IN MODEL WE DECLARED ----------
-    req.body.profilepic = fileName;
+    //req.body.profilepic = fileName;
     // uploadImage(uploadFolderPath);
 
     let objUserColRef = new custColRef(req.body);
@@ -180,59 +189,50 @@ const fetchCustomer = (req, resp) => {
         });
 };
 
-const profUpdateCustomer = (req, resp) => {
+const profUpdateCustomer = async (req, resp) => {
     const { email, name, address, city, state, gender } = req.body;
 
-    // console.log(req.body);
+    try {
+        let imageUrl = req.body.profilepic; // Keep existing URL by default
 
-    if (req.files) {
-        var fileName = req.files.profilepic.name;
-        let uploadFolderPath = path.join(__dirname, "..", "uploads", fileName);
-        req.files.profilepic.mv(uploadFolderPath);
-        req.body.filePath = uploadFolderPath;
+        if (req.files && req.files.profilepic) {
+            const file = req.files.profilepic;
+            const uploadResponse = await new Promise((resolve, reject) => {
+                cloudinary.uploader.upload_stream({ folder: "customer_profiles" }, (error, result) => {
+                    if (error) reject(error);
+                    else resolve(result);
+                }).end(file.data);
+            });
+            imageUrl = uploadResponse.secure_url;
+        }
 
-        req.body.profilepic = fileName;
-    } else {
-        req.body.profilepic = req.body.profilepic;
-    }
-
-    // console.log(req.body.profilepic);
-
-    custColRef
-        .updateOne(
+        const result = await custColRef.updateOne(
             { email: email },
             {
                 $set: {
-                    name: name,
-                    address: address,
-                    city: city,
-                    state: state,
-                    gender: gender,
-                    profilepic: fileName || req.body.profilepic,
+                    name,
+                    address,
+                    city,
+                    state,
+                    gender,
+                    profilepic: imageUrl,
                 },
-            },
-        )
-        .then((result) => {
-            if (result.matchedCount == 0) {
-                resp.status(200).json({
-                    status: false,
-                    msg: "No record found to update here...",
-                });
-            } else {
-                resp.status(200).json({
-                    status: true,
-                    msg: "Update Successfully ...",
-                    res: result,
-                });
             }
-        })
-        .catch((err) => {
-            console.log(err.message);
-            resp.status(500).json({
-                status: false,
-                msg: err.message,
-            });
+        );
+
+        if (result.matchedCount == 0) {
+            return resp.status(200).json({ status: false, msg: "No record found to update" });
+        }
+
+        resp.status(200).json({
+            status: true,
+            msg: "Update Successful",
+            imageUrl: imageUrl // Optional: send back the new URL
         });
+
+    } catch (err) {
+        resp.status(500).json({ status: false, msg: err.message });
+    }
 };
 
 const getTailorByMobile = (req, res) => {

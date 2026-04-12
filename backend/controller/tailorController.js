@@ -1,20 +1,28 @@
 var tailorColRef = require("../models/modelTailor");
 var Tesseract = require("tesseract.js");
+const cloudinary = require("../config/cloudinary"); // Path to your config
 
 const path = require("path");
 
-const tailorPersonalDetails = (req, resp) => {
+const tailorPersonalDetails = async (req, resp) => {
     console.log("hit");
 
     let fileName = req.files.profilepic.name;
-    let uploadFolderPath = path.join(__dirname, "..", "uploads", fileName);
-    req.files.profilepic.mv(uploadFolderPath);
-    req.body.filePath = uploadFolderPath;
+    // let uploadFolderPath = path.join(__dirname, "..", "uploads", fileName);
+    // req.files.profilepic.mv(uploadFolderPath);
+    // req.body.filePath = uploadFolderPath;
 
+    const uploadResponse = await new Promise((resolve, reject) => {
+            cloudinary.uploader.upload_stream({ folder: "tailor_profiles" }, (error, result) => {
+                if (error) reject(error);
+                else resolve(result);
+            }).end(fileName.data);
+        });
     // req.body.dos = new Date().toString();
 
     //-------IMPORTANT NAME SHOULD BE SAME AS IN MODEL WE DECLARED ----------
-    req.body.profilepic = fileName;
+    //req.body.profilepic = fileName;
+    req.body.profilepic = uploadResponse.secure_url;
     // uploadImage(uploadFolderPath);
 
     let objUserColRef = new tailorColRef(req.body);
