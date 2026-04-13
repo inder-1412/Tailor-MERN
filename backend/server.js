@@ -29,4 +29,8 @@ app.use((req, res) => {
     res.status(404).send("Invalid URL..");
 });
 
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config();
+}
+
 module.exports = app;
