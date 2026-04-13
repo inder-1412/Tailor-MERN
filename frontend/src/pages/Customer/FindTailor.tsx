@@ -18,7 +18,7 @@ export default function FindTailor() {
         setLoading(true);
         setHasSearched(true);
         // Using the same API calling logic pattern you used for dressTypes
-        let url = "https://tailor-mern-bcknd.vercel.app/user/searchTailors";
+        let url = "https://tailor-mern-backend.vercel.app/user/searchTailors";
         const payload = {
             city,
             category,
@@ -37,7 +37,7 @@ export default function FindTailor() {
         setCategory(cat);
         setSelectedDress("");
 
-        let url = "https://tailor-mern-bcknd.vercel.app/user/dressTypes";
+        let url = "https://tailor-mern-backend.vercel.app/user/dressTypes";
         const payload = { category: cat };
 
         let resp = await axios.post(url, payload);
@@ -189,7 +189,7 @@ export default function FindTailor() {
                                         <img
                                             src={
                                                 t.profilepic
-                                                    ? `https://tailor-mern-bcknd.vercel.app/uploads/${t.profilepic}`
+                                                    ? `https://tailor-mern-backend.vercel.app/uploads/${t.profilepic}`
                                                     : "/placeholder-tailor.jpg"
                                             }
                                             alt={t.name}

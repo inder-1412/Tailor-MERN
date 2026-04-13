@@ -55,7 +55,7 @@ function Login() {
 
         setErrors({});
 
-        let url = "https://tailor-mern-bcknd.vercel.app/user/logIn";
+        let url = "https://tailor-mern-backend.vercel.app/user/logIn";
 
         const payload = {
             email: form.email,
@@ -68,10 +68,8 @@ function Login() {
 
         if (resp.data.msg == "Login successful") {
             localStorage.setItem("emailId", form.email);
-            if (resp.data.user.userType === "user") 
-                navigate("/customer");
-            else if (resp.data.user.userType === "tailor") 
-                navigate("/tailor");
+            if (resp.data.user.userType === "user") navigate("/customer");
+            else if (resp.data.user.userType === "tailor") navigate("/tailor");
             // alert("Login successfully with type - " + resp.data.user.userType);
         } else toast.error("Failed to Login");
     };

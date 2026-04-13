@@ -80,7 +80,8 @@ function ProfileForm() {
 
         setErrors({}); // clear all error's there..
 
-        const url = "https://tailor-mern-bcknd.vercel.app/user/customerProfile";
+        const url =
+            "https://tailor-mern-backend.vercel.app/user/customerProfile";
 
         const formData = new FormData();
         formData.append("email", form.email);
@@ -93,8 +94,7 @@ function ProfileForm() {
         if (form.profilepic) formData.append("profilepic", form.profilepic);
 
         const resp = await axios.post(url, formData);
-        if(resp.data.status)
-        {
+        if (resp.data.status) {
             toast.success("Profile created successfully 🎉");
         } else {
             toast.error("Failed to create profile");
@@ -102,7 +102,8 @@ function ProfileForm() {
     };
 
     const fetchCustomer = async () => {
-        let url = "https://tailor-mern-bcknd.vercel.app/user/fetchCustomerProf";
+        let url =
+            "https://tailor-mern-backend.vercel.app/user/fetchCustomerProf";
 
         let obj = {
             email: form.email,
@@ -115,7 +116,9 @@ function ProfileForm() {
         const user = resp.data.doc;
 
         if (user.profilepic) {
-            setPrev(`https://tailor-mern-bcknd.vercel.app/uploads/${user.profilepic}`);
+            setPrev(
+                `https://tailor-mern-backend.vercel.app/uploads/${user.profilepic}`,
+            );
         }
 
         setForm((prev) => ({
@@ -131,12 +134,12 @@ function ProfileForm() {
         if (resp.data.status) {
             setIsFirstVisit(false);
             toast.success("Profile data fetched successfully 👌");
-        }else
-        toast.error("Failed to fetch profile data");
+        } else toast.error("Failed to fetch profile data");
     };
 
     const handleUpdate = async () => {
-        let url = "https://tailor-mern-bcknd.vercel.app/user/customerProfUpdate";
+        let url =
+            "https://tailor-mern-backend.vercel.app/user/customerProfUpdate";
 
         const formData = new FormData();
         formData.append("email", form.email);
@@ -154,13 +157,11 @@ function ProfileForm() {
             headers: { "Content-Type": "multipart/form-data" },
         });
 
-        if(resp.data.status)
-        {
+        if (resp.data.status) {
             toast.success("Profile updated successfully 🎉");
         } else {
             toast.error("Failed to update profile");
         }
-
     };
 
     const updatePicAndSetPreview = (

@@ -51,7 +51,7 @@ function Register() {
 
         setErrors({});
 
-        const url = "https://tailor-mern-bcknd.vercel.app/user/signUp";
+        const url = "https://tailor-mern-backend.vercel.app/user/signUp";
 
         const payload = {
             email: formDt.email,
@@ -190,7 +190,10 @@ function Register() {
                     </button>
                     <p className="text-gray-500/90 text-sm mt-4">
                         Already have an account?{" "}
-                        <Link className="text-indigo-400 hover:underline" to="/login">
+                        <Link
+                            className="text-indigo-400 hover:underline"
+                            to="/login"
+                        >
                             Login
                         </Link>
                     </p>

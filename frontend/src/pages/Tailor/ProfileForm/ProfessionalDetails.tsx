@@ -48,9 +48,12 @@ function ProfessionalDetails() {
         }
 
         axios
-            .post("https://tailor-mern-bcknd.vercel.app/tailor/fetchProfessionalInfo", {
-                email: email,
-            })
+            .post(
+                "https://tailor-mern-backend.vercel.app/tailor/fetchProfessionalInfo",
+                {
+                    email: email,
+                },
+            )
             .then((res) => {
                 if (res.data.status && res.data.doc) {
                     const user = res.data.doc;
@@ -65,7 +68,6 @@ function ProfessionalDetails() {
                         shopCity: user.shopCity || "",
                         otherInfo: user.otherInfo || "",
                     });
-
                 }
             })
             .catch(() => {
@@ -99,7 +101,6 @@ function ProfessionalDetails() {
         const { error } = professionalSchema.validate(form, {
             abortEarly: false,
         });
-        
 
         if (error) {
             const validationErrors: Partial<ProfessionalFormState> = {};
@@ -113,8 +114,8 @@ function ProfessionalDetails() {
 
         setErrors({});
 
-
-        let url = "https://tailor-mern-bcknd.vercel.app/tailor/professionalInfo";
+        let url =
+            "https://tailor-mern-backend.vercel.app/tailor/professionalInfo";
 
         let email = localStorage.getItem("emailId");
 
@@ -189,7 +190,6 @@ function ProfessionalDetails() {
                                         <option value="children">
                                             Children's Wear
                                         </option>
-                                        
                                     </select>
                                     <ChevronDown
                                         className="absolute right-3 top-3 text-slate-400 pointer-events-none"
@@ -383,16 +383,15 @@ function ProfessionalDetails() {
                     </form>
                 </div>
                 <ToastContainer
-                position="top-right"
-                autoClose={3000}
-                hideProgressBar={false}
-                newestOnTop
-                closeOnClick
-                pauseOnHover
-                theme="colored"
-            />
+                    position="top-right"
+                    autoClose={3000}
+                    hideProgressBar={false}
+                    newestOnTop
+                    closeOnClick
+                    pauseOnHover
+                    theme="colored"
+                />
             </div>
-            
         </>
     );
 }
