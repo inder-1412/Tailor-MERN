@@ -7,6 +7,8 @@ var tailorColRef = require("../models/modelTailor");
 var reviewColRef = require("../models/modelReview");
 const cloudinary = require("../config/cloudinary");
 
+var jwt=require("jsonwebtoken");
+
 require("dotenv").config();
 
 const transporter = nodemailer.createTransport({
@@ -30,7 +32,7 @@ const doSignUp = (req, resp) => {
             console.log(doc);
 
             const mailOptions = {
-                from: `"Your App Name" <${process.env.EMAIL_USER}>`,
+                from: `"Tailor Flow" <${process.env.EMAIL_USER}>`,
                 to: req.body.email,
                 subject: "Registration Successful 🎉",
                 html: `
@@ -72,6 +74,8 @@ const doSignUp = (req, resp) => {
 };
 
 const doLogIn = (req, resp) => {
+    console.log("Final enter");
+    
     let { email, pwd } = req.body;
 
     if (!email || !pwd) {
@@ -103,6 +107,9 @@ const doLogIn = (req, resp) => {
                     msg: "Invalid email or password",
                 });
             }
+            console.log("My JWT secret key = ", process.env.JWT_SECRET_KEY);
+            
+            let jToken = jwt.sign({email:email},process.env.JWT_SECRET_KEY, {expiresIn:"5h"});
 
             resp.status(200).json({
                 status: true,
@@ -111,6 +118,7 @@ const doLogIn = (req, resp) => {
                     id: user._id,
                     email: user.email,
                     userType: user.userType,
+                    token: jToken
                 },
             });
         })

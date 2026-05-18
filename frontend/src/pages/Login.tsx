@@ -68,6 +68,7 @@ function Login() {
 
         if (resp.data.msg == "Login successful") {
             localStorage.setItem("emailId", form.email);
+            localStorage.setItem("token",resp.data.user.token);
             if (resp.data.user.userType === "user") navigate("/customer");
             else if (resp.data.user.userType === "tailor") navigate("/tailor");
             // alert("Login successfully with type - " + resp.data.user.userType);
