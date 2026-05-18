@@ -156,7 +156,9 @@ function ProfileForm() {
         console.log(formData);
 
         let resp = await axios.post(url, formData, {
-            headers: { "Content-Type": "multipart/form-data" },
+            headers: { "Content-Type": "multipart/form-data" ,
+                "authorization": `Bearer ${localStorage.getItem("token")}`
+            },
         });
 
         if (resp.data.status) {

@@ -44,8 +44,12 @@ function RateAndReview() {
             const res = await axios.post(
                 "https://tailor-mern-backend.vercel.app/user/getByMobile",
                 {
-                    mobile: form.mobile,
-                },
+                    mobile: form.mobile,  
+                }
+                ,{
+            headers: { "Content-Type": "multipart/form-data" ,
+                "authorization": `Bearer ${localStorage.getItem("token")}`
+            }},
             );
             if (res.data.status) {
                 setTailorName(res.data.name);
@@ -68,7 +72,11 @@ function RateAndReview() {
         try {
             const res = await axios.post(
                 "https://tailor-mern-backend.vercel.app/user/addReview",
-                form,
+                form,{
+                    headers: { "Content-Type": "multipart/form-data" ,
+                        "authorization": `Bearer ${localStorage.getItem("token")}`
+                    },
+                }
             );
             if (res.data.status) {
                 toast.success("Review submitted successfully 🎉");
