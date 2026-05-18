@@ -66,7 +66,7 @@ function Login() {
             headers: { "Content-Type": "application/x-www-form-urlencoded" },
         });
 
-        if (resp.data.msg == "Login successful") {
+        if (resp.data.msg == "Login successfull") {
             localStorage.setItem("emailId", form.email);
             localStorage.setItem("token",resp.data.user.token);
             if (resp.data.user.userType === "user") navigate("/customer");

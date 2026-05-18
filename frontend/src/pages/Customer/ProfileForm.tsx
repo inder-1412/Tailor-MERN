@@ -110,7 +110,9 @@ function ProfileForm() {
         };
 
         let resp = await axios.post(url, obj, {
-            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+            headers: { "Content-Type": "application/x-www-form-urlencoded", 
+                "authorization": `Bearer ${localStorage.getItem("token")}`
+            },
         });
 
         const user = resp.data.doc;

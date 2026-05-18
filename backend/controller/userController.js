@@ -109,7 +109,7 @@ const doLogIn = (req, resp) => {
             }
             console.log("My JWT secret key = ", process.env.JWT_SECRET_KEY);
             
-            let jToken = jwt.sign({email:email},process.env.JWT_SECRET_KEY, {expiresIn:"5h"});
+            let jToken = jwt.sign({email:email}, process.env.JWT_SECRET_KEY, {expiresIn:"5h"});
 
             resp.status(200).json({
                 status: true,
