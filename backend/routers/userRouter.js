@@ -11,8 +11,8 @@ router.post("/logIn",userController.doLogIn);
 router.post("/customerProfile",userController.custProfile);
 router.post("/fetchCustomerProf",validateTokenn2,userController.fetchCustomer);
 router.post("/customerProfUpdate",userController.profUpdateCustomer);
-router.post("/getByMobile", userController.getTailorByMobile);
-router.post("/addReview", userController.addTailorReview);
+router.post("/getByMobile", validateTokenn2, userController.getTailorByMobile);
+router.post("/addReview", validateTokenn2, userController.addTailorReview);
 
 router.post("/cities", userController.getCities);
 router.post("/dressTypes", userController.getDressTypes);
