@@ -8,6 +8,7 @@ var reviewColRef = require("../models/modelReview");
 const cloudinary = require("../config/cloudinary");
 
 var jwt=require("jsonwebtoken");
+const { log } = require("console");
 
 require("dotenv").config();
 
@@ -133,6 +134,8 @@ const doLogIn = (req, resp) => {
 const custProfile = async (req, resp) => {
     let fileName = req.files.profilepic.name;
     // 
+
+    console.log("Received file: ", fileName);
     
     const uploadResponse = await new Promise((resolve, reject) => {
             cloudinary.uploader.upload_stream({ folder: "customer_profiles" }, (error, result) => {
@@ -143,6 +146,7 @@ const custProfile = async (req, resp) => {
 
         // Store the URL in the database
         req.body.profilepic = uploadResponse.secure_url;
+        console.log("Uploaded image URL: ", req.body.profilepic);
 
     // req.body.dos = new Date().toString();
 
@@ -151,6 +155,7 @@ const custProfile = async (req, resp) => {
     // uploadImage(uploadFolderPath);
 
     let objUserColRef = new custColRef(req.body);
+    console.log("Customer profile data: ", req.body);
     objUserColRef
         .save()
         .then((doc) => {
