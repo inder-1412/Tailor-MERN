@@ -113,7 +113,7 @@ const doLogIn = (req, resp) => {
 
             resp.status(200).json({
                 status: true,
-                msg: "Login successful",
+                msg: "Login successfull",
                 user: {
                     id: user._id,
                     email: user.email,
