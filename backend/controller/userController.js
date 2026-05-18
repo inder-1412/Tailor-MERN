@@ -171,6 +171,7 @@ const custProfile = async (req, resp) => {
 
 const fetchCustomer = (req, resp) => {
     const { email } = req.body;
+    console.log(email);
 
     custColRef
         .findOne({ email: email })
