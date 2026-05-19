@@ -118,9 +118,13 @@ function ProfileForm() {
         const user = resp.data.doc;
 
         if (user.profilepic) {
+            // setPrev(
+            //     `https://tailor-mern-backend.vercel.app/uploads/${user.profilepic}`,
+            // )
+            
             setPrev(
-                `https://tailor-mern-backend.vercel.app/uploads/${user.profilepic}`,
-            );
+                user.profilepic,
+            );;
         }
 
         setForm((prev) => ({
