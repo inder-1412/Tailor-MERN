@@ -131,47 +131,93 @@ const doLogIn = (req, resp) => {
         });
 };
 
-const custProfile = async (req, resp) => {
-    let fileName = req.files.profilepic.name;
-    // 
+// const custProfile = async (req, resp) => {
+//     let fileName = req.files.profilepic.name;
+//     // 
 
-    console.log("Received file: ", fileName);
+//     console.log("Received file: ", fileName);
     
-    const uploadResponse = await new Promise((resolve, reject) => {
+//     const uploadResponse = await new Promise((resolve, reject) => {
+//             cloudinary.uploader.upload_stream({ folder: "customer_profiles" }, (error, result) => {
+//                 if (error) reject(error);
+//                 else resolve(result);
+//             }).end(fileName.data);
+//         });
+
+//         // Store the URL in the database
+//         req.body.profilepic = uploadResponse.secure_url;
+//         console.log("Uploaded image URL: ", req.body.profilepic);
+
+//     // req.body.dos = new Date().toString();
+
+//     //-------IMPORTANT NAME SHOULD BE SAME AS IN MODEL WE DECLARED ----------
+//     //req.body.profilepic = fileName;
+//     // uploadImage(uploadFolderPath);
+
+//     let objUserColRef = new custColRef(req.body);
+//     console.log("Customer profile data: ", req.body);
+//     objUserColRef
+//         .save()
+//         .then((doc) => {
+//             console.log(doc);
+//             resp.status(200).json({
+//                 status: true,
+//                 msg: "Record saved.",
+//                 doc: doc,
+//             });
+//         })
+//         .catch((err) => {
+//             resp.status(200).json({
+//                 status: false,
+//                 msg: err.message,
+//             });
+//         });
+// };
+
+const custProfile = async (req, resp) => {
+    try {
+        // 1. Ensure a file was actually uploaded to prevent crashing
+        if (!req.files || !req.files.profilepic) {
+            return resp.status(400).json({ status: false, msg: "No profile picture uploaded." });
+        }
+
+        // 2. Grab the whole file object, not just the name
+        let profilePicFile = req.files.profilepic; 
+        console.log("Received file: ", profilePicFile.name);
+        
+        // 3. Upload to Cloudinary
+        const uploadResponse = await new Promise((resolve, reject) => {
             cloudinary.uploader.upload_stream({ folder: "customer_profiles" }, (error, result) => {
                 if (error) reject(error);
                 else resolve(result);
-            }).end(fileName.data);
+            }).end(profilePicFile.data); // Pass the actual file buffer here
         });
 
-        // Store the URL in the database
+        // Store the URL in the req.body
         req.body.profilepic = uploadResponse.secure_url;
         console.log("Uploaded image URL: ", req.body.profilepic);
 
-    // req.body.dos = new Date().toString();
-
-    //-------IMPORTANT NAME SHOULD BE SAME AS IN MODEL WE DECLARED ----------
-    //req.body.profilepic = fileName;
-    // uploadImage(uploadFolderPath);
-
-    let objUserColRef = new custColRef(req.body);
-    console.log("Customer profile data: ", req.body);
-    objUserColRef
-        .save()
-        .then((doc) => {
-            console.log(doc);
-            resp.status(200).json({
-                status: true,
-                msg: "Record saved.",
-                doc: doc,
-            });
-        })
-        .catch((err) => {
-            resp.status(200).json({
-                status: false,
-                msg: err.message,
-            });
+        // 4. Save to Database
+        let objUserColRef = new custColRef(req.body);
+        console.log("Customer profile data: ", req.body);
+        
+        // You can use await here as well for cleaner syntax instead of .then()
+        const doc = await objUserColRef.save();
+        
+        console.log("Saved document: ", doc);
+        resp.status(200).json({
+            status: true,
+            msg: "Record saved.",
+            doc: doc,
         });
+
+    } catch (err) {
+        console.error("Upload/Save Error: ", err);
+        resp.status(500).json({ // 500 status code is better for server/upload errors
+            status: false,
+            msg: err.message || "An error occurred during upload.",
+        });
+    }
 };
 
 const fetchCustomer = (req, resp) => {
