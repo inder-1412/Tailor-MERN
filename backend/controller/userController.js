@@ -249,12 +249,63 @@ const fetchCustomer = (req, resp) => {
         });
 };
 
+// const profUpdateCustomer = async (req, resp) => {
+//     const { email, name, address, city, state, gender } = req.body;
+
+//     try {
+//         let imageUrl = req.body.profilepic; // Keep existing URL by default
+
+//         if (req.files && req.files.profilepic) {
+//             const file = req.files.profilepic;
+//             const uploadResponse = await new Promise((resolve, reject) => {
+//                 cloudinary.uploader.upload_stream({ folder: "customer_profiles" }, (error, result) => {
+//                     if (error) reject(error);
+//                     else resolve(result);
+//                 }).end(file.data);
+//             });
+//             imageUrl = uploadResponse.secure_url;
+//         }
+
+//         const result = await custColRef.updateOne(
+//             { email: email },
+//             {
+//                 $set: {
+//                     name,
+//                     address,
+//                     city,
+//                     state,
+//                     gender,
+//                     profilepic: imageUrl,
+//                 },
+//             }
+//         );
+
+//         if (result.matchedCount == 0) {
+//             return resp.status(200).json({ status: false, msg: "No record found to update" });
+//         }
+
+//         resp.status(200).json({
+//             status: true,
+//             msg: "Update Successful",
+//             imageUrl: imageUrl // Optional: send back the new URL
+//         });
+
+//     } catch (err) {
+//         resp.status(500).json({ status: false, msg: err.message });
+//     }
+// };
+
 const profUpdateCustomer = async (req, resp) => {
     const { email, name, address, city, state, gender } = req.body;
 
     try {
-        let imageUrl = req.body.profilepic; // Keep existing URL by default
+        // 1. FIX: Check if the profilepic field is explicitly a string "null" or invalid, and handle fallback
+        let imageUrl = null;
+        if (req.body.profilepic && req.body.profilepic !== "null" && req.body.profilepic !== "[object Object]") {
+            imageUrl = req.body.profilepic; // Keep existing URL if valid
+        }
 
+        // 2. Process file if a new file is uploaded
         if (req.files && req.files.profilepic) {
             const file = req.files.profilepic;
             const uploadResponse = await new Promise((resolve, reject) => {
@@ -266,28 +317,25 @@ const profUpdateCustomer = async (req, resp) => {
             imageUrl = uploadResponse.secure_url;
         }
 
+        // 3. Build the update payload dynamically to avoid overriding with null if not intended
+        const updateData = { name, address, city, state, gender };
+        if (imageUrl) {
+            updateData.profilepic = imageUrl;
+        }
+
         const result = await custColRef.updateOne(
             { email: email },
-            {
-                $set: {
-                    name,
-                    address,
-                    city,
-                    state,
-                    gender,
-                    profilepic: imageUrl,
-                },
-            }
+            { $set: updateData }
         );
 
-        if (result.matchedCount == 0) {
+        if (result.matchedCount === 0) {
             return resp.status(200).json({ status: false, msg: "No record found to update" });
         }
 
         resp.status(200).json({
             status: true,
             msg: "Update Successful",
-            imageUrl: imageUrl // Optional: send back the new URL
+            imageUrl: imageUrl
         });
 
     } catch (err) {
